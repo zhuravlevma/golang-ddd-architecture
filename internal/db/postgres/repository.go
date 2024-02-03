@@ -3,6 +3,7 @@ package postgres
 import (
 	"github.com/google/uuid"
 	"github.com/zhuravlevma/golang-ddd-architecture/internal/entities"
+	"github.com/zhuravlevma/golang-ddd-architecture/internal/ports/out"
 	"gorm.io/gorm"
 )
 
@@ -10,34 +11,32 @@ type GormProductRepository struct {
 	db *gorm.DB
 }
 
-func NewGormProductRepository(db *gorm.DB) GormProductRepository {
-	return GormProductRepository{db: db}
+func NewGormProductRepository(db *gorm.DB) out.ProductRepository {
+	return &GormProductRepository{db: db}
 }
 
-func (repo *GormProductRepository) FindByID(id uuid.UUID) (*Product, error) {
+func (repo *GormProductRepository) FindByID(id uuid.UUID) (*entities.Product, error) {
 	var dbProduct Product
 	if err := repo.db.First(&dbProduct, id).Error; err != nil {
 		return nil, err
 	}
 
-	// Map back to domain entity
-	return &dbProduct, nil;
+
+	return FromDBProduct(&dbProduct), nil
 }
 
-func (repo *GormProductRepository) Create(product *entities.Product) error {
-	// Map domain entity to DB model
+func (repo *GormProductRepository) Create(product *entities.Product) (*entities.Product, error) {
 	dbProduct := ToDBProduct(product)
 
 	if err := repo.db.Create(dbProduct).Error; err != nil {
-		return err
+		return product, err
 	}
 
-	// Read row from DB to never return different data than persisted
-	_, err := repo.FindByID(dbProduct.ID)
+	savedEntity, err := repo.FindByID(dbProduct.ID)
 	if err != nil {
-		return err
+		return product, err
 	}
 
 
-	return nil
+	return savedEntity, nil
 }

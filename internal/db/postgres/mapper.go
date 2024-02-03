@@ -11,3 +11,7 @@ func ToDBProduct(product *entities.Product) *Product {
 
 	return p
 }
+
+func FromDBProduct(dbProduct *Product) *entities.Product {
+	return entities.NewProduct(dbProduct.Name, dbProduct.Price)
+}
