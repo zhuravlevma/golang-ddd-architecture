@@ -7,8 +7,6 @@ import (
 	"github.com/zhuravlevma/golang-ddd-architecture/internal/test/ports/out"
 )
 
-
-
 type ProductService struct {
 	productRepository out.ProductRepository
 }
