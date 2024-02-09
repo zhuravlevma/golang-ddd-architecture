@@ -5,8 +5,8 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/labstack/echo"
-	"github.com/zhuravlevma/golang-ddd-architecture/internal/controllers/dtos"
-	"github.com/zhuravlevma/golang-ddd-architecture/internal/services"
+	"github.com/zhuravlevma/golang-ddd-architecture/internal/test/controllers/dtos"
+	"github.com/zhuravlevma/golang-ddd-architecture/internal/test/services"
 )
 
 type ProductController struct {

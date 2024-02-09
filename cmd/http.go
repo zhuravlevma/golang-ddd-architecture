@@ -5,9 +5,9 @@ import (
 
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"github.com/labstack/echo"
-	"github.com/zhuravlevma/golang-ddd-architecture/internal/controllers"
-	psql "github.com/zhuravlevma/golang-ddd-architecture/internal/db/postgres"
-	"github.com/zhuravlevma/golang-ddd-architecture/internal/services"
+	"github.com/zhuravlevma/golang-ddd-architecture/internal/test/controllers"
+	psql "github.com/zhuravlevma/golang-ddd-architecture/internal/test/db/postgres"
+	"github.com/zhuravlevma/golang-ddd-architecture/internal/test/services"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"

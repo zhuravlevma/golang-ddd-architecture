@@ -1,6 +1,7 @@
 package postgres
 
-import "github.com/zhuravlevma/golang-ddd-architecture/internal/entities"
+import "github.com/zhuravlevma/golang-ddd-architecture/internal/test/entities"
+
 
 func ToDBProduct(product *entities.Product) *Product {
 	var p = &Product{

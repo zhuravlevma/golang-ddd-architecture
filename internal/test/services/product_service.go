@@ -2,10 +2,12 @@ package services
 
 import (
 	"github.com/google/uuid"
-	"github.com/zhuravlevma/golang-ddd-architecture/internal/controllers/dtos"
-	"github.com/zhuravlevma/golang-ddd-architecture/internal/entities"
-	"github.com/zhuravlevma/golang-ddd-architecture/internal/ports/out"
+	"github.com/zhuravlevma/golang-ddd-architecture/internal/test/controllers/dtos"
+	"github.com/zhuravlevma/golang-ddd-architecture/internal/test/entities"
+	"github.com/zhuravlevma/golang-ddd-architecture/internal/test/ports/out"
 )
+
+
 
 type ProductService struct {
 	productRepository out.ProductRepository
