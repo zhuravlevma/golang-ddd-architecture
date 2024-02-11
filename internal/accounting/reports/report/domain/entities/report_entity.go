@@ -7,7 +7,7 @@ type ReportEntity struct {
 	IsValid  bool
 	OrderId uuid.UUID
 	ReportNumber int
-	positions []ReportPositionEntity
+	Positions []ReportPositionEntity
 }
 
 func (report *ReportEntity) UpdateReportStatus(status bool) {
@@ -24,20 +24,20 @@ func (report *ReportEntity) ApplyReport() {
 		report.UpdateReportStatus(true)
 	}
 
-	for _, position := range report.positions {
+	for _, position := range report.Positions {
 		position.UpdatePositionDiscount(0.1);
 	}
 }
 
 func (report *ReportEntity) GetTaxAmount() (totalTax float64) {
-	for _, position := range report.positions {
+	for _, position := range report.Positions {
 		totalTax += position.GetValueOfTax();
 	}
 	return totalTax
 }
 
 func (report *ReportEntity) GetPositionsAboveTaxThreshold(threshold float64) (response []*ReportPositionEntity) {
-	for _, position := range report.positions {
+	for _, position := range report.Positions {
 		if position.GetValueOfTax() > threshold {
 			response = append(response, &position)
 		}
@@ -46,7 +46,7 @@ func (report *ReportEntity) GetPositionsAboveTaxThreshold(threshold float64) (re
 }
 
 func (report *ReportEntity) GetTotalAmountWithTax() (totalAmount float64) {
-	for _, position := range report.positions {
+	for _, position := range report.Positions {
 		totalAmount += position.GetPriceWithTax();
 	}
 	return totalAmount
