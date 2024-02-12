@@ -18,7 +18,7 @@ func NewUpdateReportInteractor(
 	return UpdateReportInteractor{findReportByIdPort, saveReportPort}
 }
 
-func (s *UpdateReportInteractor) execute(updateReportParams in.UpdateReportParams) (*entities.ReportEntity, error) {
+func (s *UpdateReportInteractor) Execute(updateReportParams *in.UpdateReportParams) (*entities.ReportEntity, error) {
 	report, err := s.findReportByIdPort.FindReportById(updateReportParams.ReportId)
 
 	if (err != nil) {

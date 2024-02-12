@@ -1,13 +1,14 @@
 package out
 
 import (
-	"github.com/zhuravlevma/golang-ddd-architecture/internal/accounting/reports/report/domain/entities"
+	"github.com/google/uuid"
+	readmodels "github.com/zhuravlevma/golang-ddd-architecture/internal/accounting/reports/report/domain/read_models"
 )
 
 type FindReportWithPositionsParams struct {
-	id string
+	Id uuid.UUID
 }
 
-type FindReportWithPositionsByOutPort interface {
-	findReportWithPositionsByOutInPort(findReportByIdQuery *FindReportWithPositionsParams) (*entities.ReportEntity, error)
+type FindReportWithPositionsByIdOutPort interface {
+	FindReportWithPositionsId(findReportByIdQuery *FindReportWithPositionsParams) (*readmodels.ReportReadModel, error)
 }

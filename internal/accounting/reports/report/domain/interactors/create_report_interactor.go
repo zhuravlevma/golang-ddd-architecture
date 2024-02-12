@@ -17,7 +17,7 @@ func NewCreateReportInteractor(
 	return CreateReportInteractor{saveReportPort}
 }
 
-func (s *CreateReportInteractor) execute(orderId uuid.UUID) (*entities.ReportEntity, error) {
+func (s *CreateReportInteractor) Execute(orderId uuid.UUID) (*entities.ReportEntity, error) {
 	report := &entities.ReportEntity {
 		ID:     uuid.New(),
 		IsValid: false,

@@ -1,5 +1,5 @@
 package dtos
 
 type UpdateReportDto struct {
-	IsValid     string  `json:"IsValid"`
+	IsValid     bool  `json:"IsValid"`
 }
