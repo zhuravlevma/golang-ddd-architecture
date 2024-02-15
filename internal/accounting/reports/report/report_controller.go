@@ -7,12 +7,14 @@ import (
 	"github.com/labstack/echo"
 	"github.com/zhuravlevma/golang-ddd-architecture/internal/accounting/reports/report/domain/interactors"
 	"github.com/zhuravlevma/golang-ddd-architecture/internal/accounting/reports/report/domain/ports/in"
+	"github.com/zhuravlevma/golang-ddd-architecture/internal/accounting/reports/report/domain/queries"
 	"github.com/zhuravlevma/golang-ddd-architecture/internal/accounting/reports/report/dtos"
 )
 
 type ReportController struct {
 	createReportInteractor interactors.CreateReportInteractor
 	updateReportInteractor interactors.UpdateReportInteractor
+	findReportByIdQuery queries.FindReportByIdQuery
 }
 
 func NewProductController(e *echo.Echo, createReportInteractor interactors.CreateReportInteractor,updateReportInteractor interactors.UpdateReportInteractor ) *ReportController {
@@ -21,6 +23,7 @@ func NewProductController(e *echo.Echo, createReportInteractor interactors.Creat
 		updateReportInteractor: updateReportInteractor,
 	}
 	e.PATCH("/reports/:id", controller.UpdateReport)
+	e.GET("/reports/:id", controller.FindReportById)
 
 	return controller
 }
@@ -49,21 +52,18 @@ func (rc *ReportController) UpdateReport(c echo.Context) error {
 	return c.JSON(http.StatusCreated, result)
 }
 
-// func (rc *ReportController) FindReportById(c echo.Context) error {
+func (rc *ReportController) FindReportById(c echo.Context) error {
 
-// 	id, err := uuid.Parse(c.Param("id"))
+	id, err := uuid.Parse(c.Param("id"))
 
 
-// 	result, err := rc.updateReportInteractor.Execute(&in.UpdateReportParams{
-// 		ReportId: id,
-// 		IsValid: &updateReportDto.IsValid,
-// 	})
+	result, err := rc.findReportByIdQuery.Execute(id)
 
-// 	if err != nil {
-// 		return c.JSON(http.StatusInternalServerError, map[string]string{
-// 			"error": "Failed to create product",
-// 		})
-// 	}
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{
+			"error": "Failed to create product",
+		})
+	}
 
-// 	return c.JSON(http.StatusCreated, result)
-// }
+	return c.JSON(http.StatusCreated, result)
+}

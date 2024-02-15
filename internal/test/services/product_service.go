@@ -2,8 +2,8 @@ package services
 
 import (
 	"github.com/google/uuid"
-	"github.com/zhuravlevma/golang-ddd-architecture/internal/test/controllers/dtos"
 	"github.com/zhuravlevma/golang-ddd-architecture/internal/test/entities"
+	"github.com/zhuravlevma/golang-ddd-architecture/internal/test/entities/dtos"
 	"github.com/zhuravlevma/golang-ddd-architecture/internal/test/ports/out"
 )
 

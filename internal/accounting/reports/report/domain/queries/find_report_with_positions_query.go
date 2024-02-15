@@ -18,8 +18,6 @@ func NewFindreportWithPositionsQuery(
 
 func (s *FindreportWithPositionsQuery) Execute(reportId uuid.UUID) (*readmodels.ReportReadModel, error) {
 	reports, err := s.findReportWithPositionsByOutPort.FindReportWithPositionsId(&out.FindReportWithPositionsParams{Id: reportId})
-
-
 	if (err != nil) {
 		return nil, err
 	}
