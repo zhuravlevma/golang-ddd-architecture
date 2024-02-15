@@ -8,12 +8,12 @@ import (
 
 type UpdateReportInteractor struct {
 	findReportByIdPort out.FindReportByIdOutPort
-	saveReportPort out.SaveReportOutPort
+	saveReportPort out.UpdateReportOutPort
 }
 
 func NewUpdateReportInteractor(
 	findReportByIdPort out.FindReportByIdOutPort,
-	saveReportPort out.SaveReportOutPort,
+	saveReportPort out.UpdateReportOutPort,
 ) UpdateReportInteractor {
 	return UpdateReportInteractor{findReportByIdPort, saveReportPort}
 }
@@ -29,5 +29,9 @@ func (s *UpdateReportInteractor) Execute(updateReportParams *in.UpdateReportPara
 		report.UpdateReportStatus(*updateReportParams.IsValid)
 	}
 
-	return s.saveReportPort.Save(report)
+	updatedErr := s.saveReportPort.UpdateReport(report)
+	if (updatedErr != nil) {
+		return nil, updatedErr
+	}
+	return report, nil
 }

@@ -17,7 +17,7 @@ type ReportController struct {
 	findReportByIdQuery queries.FindReportByIdQuery
 }
 
-func NewProductController(e *echo.Echo, createReportInteractor interactors.CreateReportInteractor,updateReportInteractor interactors.UpdateReportInteractor ) *ReportController {
+func NewReportController(e *echo.Echo, createReportInteractor interactors.CreateReportInteractor,updateReportInteractor interactors.UpdateReportInteractor) *ReportController {
 	controller := &ReportController{
 		createReportInteractor: createReportInteractor,
 		updateReportInteractor: updateReportInteractor,

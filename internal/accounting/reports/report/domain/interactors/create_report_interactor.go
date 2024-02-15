@@ -8,13 +8,13 @@ import (
 )
 
 type CreateReportInteractor struct {
-	saveReportPort out.SaveReportOutPort
+	createReportPort out.CreateReportOutPort
 }
 
 func NewCreateReportInteractor(
-	saveReportPort out.SaveReportOutPort,
+	createReportPort out.CreateReportOutPort,
 ) CreateReportInteractor {
-	return CreateReportInteractor{saveReportPort}
+	return CreateReportInteractor{createReportPort}
 }
 
 func (s *CreateReportInteractor) Execute(orderId uuid.UUID) (*entities.ReportEntity, error) {
@@ -36,6 +36,9 @@ func (s *CreateReportInteractor) Execute(orderId uuid.UUID) (*entities.ReportEnt
 		}},
 	}
 
-
-	return s.saveReportPort.Save(report)
+	createdErr := s.createReportPort.CreateReport(report)
+	if (createdErr != nil) {
+		return nil, createdErr
+	}
+	return report, nil
 }

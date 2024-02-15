@@ -8,13 +8,13 @@ import (
 )
 
 
-type GormReportRepository struct {
-	db *gorm.DB
+type ReportRepository struct {
+	Db *gorm.DB
 }
 
-func (repo *GormReportRepository) FindReportById(id uuid.UUID) (*entities.ReportEntity, error) {
+func (repo *ReportRepository) FindReportById(id uuid.UUID) (*entities.ReportEntity, error) {
 	var dbReport orm.ReportOrm
-	if err := repo.db.First(&dbReport, id).Error; err != nil {
+	if err := repo.Db.First(&dbReport, id).Error; err != nil {
 		return nil, err
 	}
 
@@ -22,9 +22,9 @@ func (repo *GormReportRepository) FindReportById(id uuid.UUID) (*entities.Report
 	return ReportToDomain(&dbReport), nil
 }
 
-func (repo *GormReportRepository) UpdateReport(report *entities.ReportEntity) error {
+func (repo *ReportRepository) UpdateReport(report *entities.ReportEntity) error {
 	dbReport := ReportToOrm(report)
-	err := repo.db.Model(&entities.ReportEntity{}).Where("id = ?", dbReport.ID).Updates(dbReport).Error
+	err := repo.Db.Model(&entities.ReportEntity{}).Where("id = ?", dbReport.ID).Updates(dbReport).Error
 	if err != nil {
 		return err
 	}
@@ -36,9 +36,9 @@ func (repo *GormReportRepository) UpdateReport(report *entities.ReportEntity) er
 	return nil
 }
 
-func (repo *GormReportRepository) CreateReport(report *entities.ReportEntity) error {
+func (repo *ReportRepository) CreateReport(report *entities.ReportEntity) error {
 	dbReport := ReportToOrm(report)
-	if err := repo.db.Create(dbReport).Error; err != nil {
+	if err := repo.Db.Create(dbReport).Error; err != nil {
 		return err
 	}
 	storedReport, err := repo.FindReportById(dbReport.ID)
@@ -49,8 +49,8 @@ func (repo *GormReportRepository) CreateReport(report *entities.ReportEntity) er
 	return nil
 }
 
-func (repo *GormReportRepository) FindReportWithPositionsByOutInPort(id uuid.UUID) (reports *[]entities.ReportEntity) {
-	repo.db.Model(&entities.ReportEntity{}).Preload("Students", func(db *gorm.DB) *gorm.DB {
+func (repo *ReportRepository) FindReportWithPositionsByOutInPort(id uuid.UUID) (reports *[]entities.ReportEntity) {
+	repo.Db.Model(&entities.ReportEntity{}).Preload("Students", func(db *gorm.DB) *gorm.DB {
     return db.Where("reports.id = ?", id)
 	}).Find(&reports)
 	return

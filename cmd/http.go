@@ -5,9 +5,10 @@ import (
 
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"github.com/labstack/echo"
-	"github.com/zhuravlevma/golang-ddd-architecture/internal/test/controllers"
-	psql "github.com/zhuravlevma/golang-ddd-architecture/internal/test/db/postgres"
-	"github.com/zhuravlevma/golang-ddd-architecture/internal/test/services"
+	"github.com/zhuravlevma/golang-ddd-architecture/internal/accounting/reports/report"
+	"github.com/zhuravlevma/golang-ddd-architecture/internal/accounting/reports/report/dal"
+	"github.com/zhuravlevma/golang-ddd-architecture/internal/accounting/reports/report/dal/orm"
+	"github.com/zhuravlevma/golang-ddd-architecture/internal/accounting/reports/report/domain/interactors"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -24,15 +25,18 @@ func main() {
 		log.Fatalf("Failed to connect to database: %v", err)
 	}
 
-	gormDB.AutoMigrate(&psql.Product{})
+	gormDB.AutoMigrate(&orm.ReportOrm{}, &orm.ReportPositionOrm{})
 
-	productRepo := psql.NewGormProductRepository(gormDB)
+	reportRepository := dal.ReportRepository{
+		Db: gormDB,
+	}
 
-	productService := services.NewProductService(productRepo)
+	createReportService := interactors.NewCreateReportInteractor(&reportRepository)
+	updateReportService := interactors.NewUpdateReportInteractor(&reportRepository, &reportRepository)
 
 	e := echo.New()
 
-	controllers.NewProductController(e, productService)
+	report.NewReportController(e, createReportService, updateReportService)
 
 	if err := e.Start(port); err != nil {
 		log.Fatalf("Failed to start server: %v", err)
