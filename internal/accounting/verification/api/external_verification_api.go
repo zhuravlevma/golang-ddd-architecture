@@ -9,5 +9,5 @@ type ExternalVerificationApi struct {}
 
 func (api *ExternalVerificationApi) SimpleVerifyReport(report *ReportApiDto) {}
 func (api *ExternalVerificationApi) FullVerifyReport(report *ReportApiDto) {}
-func (api *ExternalVerificationApi) SignReport(report *ReportApiDto) {}
-func (api *ExternalVerificationApi) Complete(report *ReportApiDto) {}
+func (api *ExternalVerificationApi) SignReport(reportNumber int) {}
+func (api *ExternalVerificationApi) Complete(reportNumber int) {}

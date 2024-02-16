@@ -1,4 +1,4 @@
-package orm
+package models
 
 import (
 	"errors"
@@ -6,16 +6,16 @@ import (
 	"github.com/google/uuid"
 )
 
-type ReportOrm struct {
+type Verfication struct {
 	ID       uuid.UUID `gorm:"primaryKey"`
-	isFull     bool
+	IsFull     bool
 	Completed bool
 	Signed	bool
 	ReportId    uuid.UUID
 	ReportNumber int
 }
 
-func (report *ReportOrm) SignReport() error {
+func (report *Verfication) SignReport() error {
 	if report.Completed == true {
 		return errors.New("Cannot sign a report that has already been completed.")
 	}
@@ -23,7 +23,7 @@ func (report *ReportOrm) SignReport() error {
 	return nil
 }
 
-func (report *ReportOrm) CompleteVerification() error {
+func (report *Verfication) CompleteVerification() error {
 	if report.Signed == false {
 		return errors.New("Cannot complete verification without signing the report.")
 	}

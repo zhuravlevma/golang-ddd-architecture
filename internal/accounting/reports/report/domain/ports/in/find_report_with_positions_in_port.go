@@ -10,5 +10,5 @@ type FindReportWithPositionsParams struct {
 }
 
 type FindReportWithPositionsByIdInPort interface {
-	Execute(findReportWithPositionsParams *FindReportByIdParams) (*readmodels.ReportReadModel, error)
+	Execute(findReportWithPositionsParams *FindReportWithPositionsParams) (*readmodels.ReportReadModel, error)
 }
