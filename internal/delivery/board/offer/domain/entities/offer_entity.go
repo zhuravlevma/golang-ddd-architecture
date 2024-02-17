@@ -57,3 +57,8 @@ func (o *OfferEntity) setWeight(weight int) error {
 	o.Weight = weight
 	return nil
 }
+
+func (o *OfferEntity) CurierTakeOffer(curierId uuid.UUID) {
+	o.CurierId = &curierId
+	// add event
+}

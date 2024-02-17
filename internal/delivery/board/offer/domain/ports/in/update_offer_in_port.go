@@ -7,7 +7,7 @@ import (
 
 type UpdateOfferParams struct {
 	OfferId uuid.UUID
-	CurierId uuid.UUID
+	CurierId *uuid.UUID
 }
 
 type UpdateOfferInPort interface {
