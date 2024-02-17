@@ -6,13 +6,13 @@ import (
 )
 
 type ReportPositionEntity struct {
-	ID     uuid.UUID
-	Name   string
-	Count  int
-	Code int
-	Weight int
+	ID      uuid.UUID
+	Name    string
+	Count   int
+	Code    int
+	Weight  int
 	IsValid bool
-	Amount values.AmountValue
+	Amount  values.AmountValue
 }
 
 func (position *ReportPositionEntity) PriceOfOnePosition() float64 {

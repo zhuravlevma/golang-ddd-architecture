@@ -1,14 +1,14 @@
 package values
 
 type AmountValue struct {
-	Amount   float64
-	Rate  float64
+	Amount float64
+	Rate   float64
 }
 
 func NewAmount(amount float64, rate float64) *AmountValue {
 	return &AmountValue{
-		Amount:   amount,
-		Rate:  rate,
+		Amount: amount,
+		Rate:   rate,
 	}
 }
 

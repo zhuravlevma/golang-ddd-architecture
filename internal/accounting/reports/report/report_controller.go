@@ -14,10 +14,10 @@ import (
 type ReportController struct {
 	createReportInteractor interactors.CreateReportInteractor
 	updateReportInteractor interactors.UpdateReportInteractor
-	findReportByIdQuery queries.FindReportByIdQuery
+	findReportByIdQuery    queries.FindReportByIdQuery
 }
 
-func NewReportController(e *echo.Echo, createReportInteractor interactors.CreateReportInteractor,updateReportInteractor interactors.UpdateReportInteractor) *ReportController {
+func NewReportController(e *echo.Echo, createReportInteractor interactors.CreateReportInteractor, updateReportInteractor interactors.UpdateReportInteractor) *ReportController {
 	controller := &ReportController{
 		createReportInteractor: createReportInteractor,
 		updateReportInteractor: updateReportInteractor,
@@ -40,7 +40,7 @@ func (rc *ReportController) UpdateReport(c echo.Context) error {
 
 	result, err := rc.updateReportInteractor.Execute(&in.UpdateReportParams{
 		ReportId: id,
-		IsValid: &updateReportDto.IsValid,
+		IsValid:  &updateReportDto.IsValid,
 	})
 
 	if err != nil {
@@ -55,7 +55,6 @@ func (rc *ReportController) UpdateReport(c echo.Context) error {
 func (rc *ReportController) FindReportById(c echo.Context) error {
 
 	id, err := uuid.Parse(c.Param("id"))
-
 
 	result, err := rc.findReportByIdQuery.Execute(id)
 

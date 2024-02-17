@@ -11,8 +11,8 @@ import (
 )
 
 type VerificationService struct {
-	Repository *gorm.DB
-	ExternalVerificationApi api.ExternalVerificationApi
+	Repository                        *gorm.DB
+	ExternalVerificationApi           api.ExternalVerificationApi
 	FindReportWithPositionsByIdInPort in.FindReportWithPositionsByIdInPort
 }
 
@@ -20,7 +20,7 @@ func (v *VerificationService) Update(updateVerificationDto *dtos.UpdateVerificat
 	var verification *models.Verfication
 	v.Repository.Find(&verification, updateVerificationDto.Id)
 
-	if (verification == nil) {
+	if verification == nil {
 		return nil, errors.New("Verification not found")
 	}
 
@@ -34,7 +34,7 @@ func (v *VerificationService) Update(updateVerificationDto *dtos.UpdateVerificat
 
 	if updateVerificationDto.IsFull != nil {
 		v.ExternalVerificationApi.FullVerifyReport(&api.ReportApiDto{
-			Id: report.ID.String(),
+			Id:           report.ID.String(),
 			ReportNumber: report.ReportNumber,
 		})
 	}

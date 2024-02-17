@@ -5,20 +5,20 @@ import (
 )
 
 type ReportReadModel struct {
-	ID     uuid.UUID
-	IsValid  bool
-	OrderId uuid.UUID
+	ID           uuid.UUID
+	IsValid      bool
+	OrderId      uuid.UUID
 	ReportNumber int
-	Positions []ReportPositionReadModel
+	Positions    []ReportPositionReadModel
 }
 
 type ReportPositionReadModel struct {
-	ID     uuid.UUID
-	Name   string
-	Count  int
-	Code int
-	Weight int
+	ID      uuid.UUID
+	Name    string
+	Count   int
+	Code    int
+	Weight  int
 	IsValid bool
-	Amount   float64
-	Rate  float64
+	Amount  float64
+	Rate    float64
 }

@@ -8,7 +8,7 @@ import (
 
 type UpdateReportInteractor struct {
 	findReportByIdPort out.FindReportByIdOutPort
-	saveReportPort out.UpdateReportOutPort
+	saveReportPort     out.UpdateReportOutPort
 }
 
 func NewUpdateReportInteractor(
@@ -21,16 +21,16 @@ func NewUpdateReportInteractor(
 func (s *UpdateReportInteractor) Execute(updateReportParams *in.UpdateReportParams) (*entities.ReportEntity, error) {
 	report, err := s.findReportByIdPort.FindReportById(updateReportParams.ReportId)
 
-	if (err != nil) {
+	if err != nil {
 		return nil, err
 	}
 
-	if (updateReportParams.IsValid != nil) {
+	if updateReportParams.IsValid != nil {
 		report.UpdateReportStatus(*updateReportParams.IsValid)
 	}
 
 	updatedErr := s.saveReportPort.UpdateReport(report)
-	if (updatedErr != nil) {
+	if updatedErr != nil {
 		return nil, updatedErr
 	}
 	return report, nil

@@ -18,26 +18,26 @@ func NewCreateReportInteractor(
 }
 
 func (s *CreateReportInteractor) Execute(orderId uuid.UUID) (*entities.ReportEntity, error) {
-	report := &entities.ReportEntity {
-		ID:     uuid.New(),
-		IsValid: false,
+	report := &entities.ReportEntity{
+		ID:           uuid.New(),
+		IsValid:      false,
 		ReportNumber: 230030,
 		Positions: []entities.ReportPositionEntity{{
-				ID: uuid.New(),
-				Name: "empty position",
-				Count: 0,
-				Code: 0,
-				Weight: 0,
-				IsValid: false,
-				Amount: values.AmountValue{
-					Amount: 100,
-					Rate: 0,
-				},
+			ID:      uuid.New(),
+			Name:    "empty position",
+			Count:   0,
+			Code:    0,
+			Weight:  0,
+			IsValid: false,
+			Amount: values.AmountValue{
+				Amount: 100,
+				Rate:   0,
+			},
 		}},
 	}
 
 	createdErr := s.createReportPort.CreateReport(report)
-	if (createdErr != nil) {
+	if createdErr != nil {
 		return nil, createdErr
 	}
 	return report, nil

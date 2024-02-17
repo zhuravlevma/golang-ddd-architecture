@@ -3,11 +3,11 @@ package entities
 import "github.com/google/uuid"
 
 type ReportEntity struct {
-	ID     uuid.UUID
-	IsValid  bool
-	OrderId uuid.UUID
+	ID           uuid.UUID
+	IsValid      bool
+	OrderId      uuid.UUID
 	ReportNumber int
-	Positions []ReportPositionEntity
+	Positions    []ReportPositionEntity
 }
 
 func (report *ReportEntity) UpdateReportStatus(status bool) {
@@ -25,13 +25,13 @@ func (report *ReportEntity) ApplyReport() {
 	}
 
 	for _, position := range report.Positions {
-		position.UpdatePositionDiscount(0.1);
+		position.UpdatePositionDiscount(0.1)
 	}
 }
 
 func (report *ReportEntity) GetTaxAmount() (totalTax float64) {
 	for _, position := range report.Positions {
-		totalTax += position.GetValueOfTax();
+		totalTax += position.GetValueOfTax()
 	}
 	return totalTax
 }
@@ -47,7 +47,7 @@ func (report *ReportEntity) GetPositionsAboveTaxThreshold(threshold float64) (re
 
 func (report *ReportEntity) GetTotalAmountWithTax() (totalAmount float64) {
 	for _, position := range report.Positions {
-		totalAmount += position.GetPriceWithTax();
+		totalAmount += position.GetPriceWithTax()
 	}
 	return totalAmount
 }

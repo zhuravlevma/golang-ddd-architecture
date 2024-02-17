@@ -18,7 +18,7 @@ func NewFindReportByIdQuery(
 
 func (s *FindReportByIdQuery) Execute(reportId uuid.UUID) (*entities.ReportEntity, error) {
 	report, err := s.findReportByIdOutPort.FindReportById(reportId)
-	if (err != nil) {
+	if err != nil {
 		return nil, err
 	}
 

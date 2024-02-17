@@ -14,8 +14,6 @@ import (
 	"gorm.io/gorm"
 )
 
-
-
 func main() {
 	dsn := "host=localhost user=maksim password=postgres dbname=postgres port=5432 sslmode=disable"
 	port := ":8080"

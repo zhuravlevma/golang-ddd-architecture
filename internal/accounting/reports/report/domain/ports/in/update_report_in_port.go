@@ -7,7 +7,7 @@ import (
 
 type UpdateReportParams struct {
 	ReportId uuid.UUID
-	IsValid *bool
+	IsValid  *bool
 }
 
 type UpdateReportInPort interface {

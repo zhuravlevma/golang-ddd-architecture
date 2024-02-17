@@ -5,9 +5,9 @@ import (
 )
 
 type ReportOrm struct {
-	ID       uuid.UUID `gorm:"primaryKey"`
-	IsValid     bool
-	OrderId    uuid.UUID
+	ID           uuid.UUID `gorm:"primaryKey"`
+	IsValid      bool
+	OrderId      uuid.UUID
 	ReportNumber int
-	Positions []ReportPositionOrm `gorm:"foreignKey:ReportId"`
+	Positions    []ReportPositionOrm `gorm:"foreignKey:ReportId"`
 }

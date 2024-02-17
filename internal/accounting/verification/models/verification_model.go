@@ -7,11 +7,11 @@ import (
 )
 
 type Verfication struct {
-	ID       uuid.UUID `gorm:"primaryKey"`
-	IsFull     bool
-	Completed bool
-	Signed	bool
-	ReportId    uuid.UUID
+	ID           uuid.UUID `gorm:"primaryKey"`
+	IsFull       bool
+	Completed    bool
+	Signed       bool
+	ReportId     uuid.UUID
 	ReportNumber int
 }
 
