@@ -36,7 +36,7 @@ func (oc *OfferController) UpdateOrderStatus(c echo.Context) error {
 	}
 
 	result, err := oc.UpdateOfferInteractor.Execute(&in.UpdateOfferParams{
-		OfferId: id,
+		OfferId:  id,
 		CurierId: updateReportDto.CurierId,
 	})
 

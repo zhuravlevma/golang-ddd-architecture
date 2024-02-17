@@ -6,7 +6,7 @@ import (
 )
 
 type CreateOfferParams struct {
-	Name string
+	Name    string
 	OrderId uuid.UUID
 }
 

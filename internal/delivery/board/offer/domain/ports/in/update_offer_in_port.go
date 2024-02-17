@@ -6,7 +6,7 @@ import (
 )
 
 type UpdateOfferParams struct {
-	OfferId uuid.UUID
+	OfferId  uuid.UUID
 	CurierId *uuid.UUID
 }
 

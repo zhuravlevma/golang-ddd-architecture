@@ -13,18 +13,18 @@ type CreateOfferInteractor struct {
 
 func (o *CreateOfferInteractor) Execute(createOfferCommand *in.CreateOfferParams) (*entities.OfferEntity, error) {
 	offer := &entities.OfferEntity{
-		Id:  uuid.New(),
-		Name: createOfferCommand.Name,
-		OrderId: createOfferCommand.OrderId,
-		CurierId: nil,
-		VehicleType: "Bike",
+		Id:                     uuid.New(),
+		Name:                   createOfferCommand.Name,
+		OrderId:                createOfferCommand.OrderId,
+		CurierId:               nil,
+		VehicleType:            "Bike",
 		PreferredDeliveryAreas: "New York",
-		WorkingHours: "8-11",
-		Weight: 0,
-		Bid: 5,
+		WorkingHours:           "8-11",
+		Weight:                 0,
+		Bid:                    5,
 	}
 	err := o.createOfferOutPort.CreateOffer(offer)
-	if (err != nil) {
+	if err != nil {
 		return nil, err
 	}
 	return offer, nil

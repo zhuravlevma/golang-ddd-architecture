@@ -5,5 +5,5 @@ import (
 )
 
 type CreateOfferOutPort interface {
-	CreateOffer(*entities.OfferEntity) (error)
+	CreateOffer(*entities.OfferEntity) error
 }

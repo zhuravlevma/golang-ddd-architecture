@@ -7,15 +7,15 @@ import (
 )
 
 type OfferEntity struct {
-	Id uuid.UUID
-	Name string
-	OrderId uuid.UUID
-	CurierId *uuid.UUID
-	VehicleType string
+	Id                     uuid.UUID
+	Name                   string
+	OrderId                uuid.UUID
+	CurierId               *uuid.UUID
+	VehicleType            string
 	PreferredDeliveryAreas string
-	WorkingHours string
-	Weight int
-	Bid int
+	WorkingHours           string
+	Weight                 int
+	Bid                    int
 }
 
 func (o *OfferEntity) SetVehicleType(vehicleType string) {

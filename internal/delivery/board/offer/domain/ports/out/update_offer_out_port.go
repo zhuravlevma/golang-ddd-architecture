@@ -5,5 +5,5 @@ import (
 )
 
 type UpdateOfferOutPort interface {
-	UpdateOffer(*entities.OfferEntity) (error)
+	UpdateOffer(*entities.OfferEntity) error
 }

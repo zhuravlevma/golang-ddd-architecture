@@ -8,7 +8,7 @@ import (
 
 type UpdateOfferInteractor struct {
 	findOfferByIdOutPort out.FindOfferByIdOutPort
-	updateOfferOutPort out.UpdateOfferOutPort
+	updateOfferOutPort   out.UpdateOfferOutPort
 }
 
 func (o *UpdateOfferInteractor) Execute(updateOfferCommand *in.UpdateOfferParams) (*entities.OfferEntity, error) {
