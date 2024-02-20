@@ -1,10 +1,13 @@
 package main
 
 import (
+	"fmt"
 	"log"
 
 	_ "github.com/jinzhu/gorm/dialects/postgres"
+	"github.com/joho/godotenv"
 	"github.com/labstack/echo"
+	config "github.com/zhuravlevma/golang-ddd-architecture/internal/__config__"
 	"github.com/zhuravlevma/golang-ddd-architecture/internal/accounting/reports/report"
 	"github.com/zhuravlevma/golang-ddd-architecture/internal/accounting/reports/report/dal"
 	"github.com/zhuravlevma/golang-ddd-architecture/internal/accounting/reports/report/dal/orm"
@@ -14,11 +17,18 @@ import (
 	"gorm.io/gorm"
 )
 
-func main() {
-	dsn := "host=localhost user=maksim password=postgres dbname=postgres port=5432 sslmode=disable"
-	port := ":8080"
+func init() {
+	if err := godotenv.Load(); err != nil {
+		log.Print("No .env file found")
+	}
+}
 
-	gormDB, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+func main() {
+	config := config.New()
+	url := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=%s", config.Db.Host, config.Db.User, config.Db.Password, config.Db.Name, config.Db.Port, config.Db.SSL)
+	port := fmt.Sprintf(":%d", config.Port)
+
+	gormDB, err := gorm.Open(postgres.Open(url), &gorm.Config{})
 	if err != nil {
 		log.Fatalf("Failed to connect to database: %v", err)
 	}
