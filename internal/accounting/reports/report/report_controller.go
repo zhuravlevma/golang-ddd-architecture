@@ -1,10 +1,12 @@
 package report
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/google/uuid"
 	"github.com/labstack/echo"
+	amqp "github.com/rabbitmq/amqp091-go"
 	"github.com/zhuravlevma/golang-ddd-architecture/internal/accounting/reports/report/domain/interactors"
 	"github.com/zhuravlevma/golang-ddd-architecture/internal/accounting/reports/report/domain/ports/in"
 	"github.com/zhuravlevma/golang-ddd-architecture/internal/accounting/reports/report/domain/queries"
@@ -17,11 +19,40 @@ type ReportController struct {
 	findReportByIdQuery    queries.FindReportByIdQuery
 }
 
-func NewReportController(e *echo.Echo, createReportInteractor interactors.CreateReportInteractor, updateReportInteractor interactors.UpdateReportInteractor) *ReportController {
+func NewReportController(e *echo.Echo, amqpChannel *amqp.Channel, createReportInteractor interactors.CreateReportInteractor, updateReportInteractor interactors.UpdateReportInteractor) *ReportController {
 	controller := &ReportController{
 		createReportInteractor: createReportInteractor,
 		updateReportInteractor: updateReportInteractor,
 	}
+	q, err := amqpChannel.QueueDeclare(
+		"hello",
+		false,
+		false,
+		false,
+		false,
+		nil,
+	)
+	if err != nil {
+		log.Fatalf("failed to declare a queue. Error: %s", err)
+	}
+
+	messages, err := amqpChannel.Consume(
+		q.Name, // queue
+		"",     // consumer
+		true,   // auto-ack
+		false,  // exclusive
+		false,  // no-local
+		false,  // no-wait
+		nil,    // args
+	)
+	if err != nil {
+		log.Fatalf("failed to register a consumer. Error: %s", err)
+	}
+	go func() {
+		for message := range messages {
+			log.Printf("received a message: %s", message.Body)
+		}
+	}()
 	e.PATCH("/reports/:id", controller.UpdateReport)
 	e.GET("/reports/:id", controller.FindReportById)
 

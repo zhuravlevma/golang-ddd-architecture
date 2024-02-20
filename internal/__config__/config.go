@@ -15,8 +15,16 @@ type DbConfig struct {
 		SSL string
 }
 
+type AmqpConfig struct {
+	Host string
+	User   string
+	Password   string
+	Port int
+}
+
 type Config struct {
     Db    DbConfig
+		Amqp AmqpConfig
     Port int
 }
 
@@ -30,6 +38,12 @@ func New() *Config {
 				Name: getEnv("DB_NAME", "postgres"),
 				Port: getEnvAsInt("DB_PORT", 5432),
 				SSL: getEnv("DB_SSL_MODE", "disable"),
+			},
+			Amqp: AmqpConfig{
+				Host: getEnv("AMQP_HOST", "localhost"),
+				User: getEnv("AMQP_USER", "guest"),
+				Password: getEnv("AMQP_PASSWORD", "guest"),
+				Port: getEnvAsInt("AMQP_PORT", 5672),
 			},
 			Port: getEnvAsInt("PORT", 8080),
     }
