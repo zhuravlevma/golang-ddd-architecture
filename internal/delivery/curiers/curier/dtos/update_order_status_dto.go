@@ -2,5 +2,5 @@ package dtos
 
 type UpdateOrderStatusDto struct {
 	Delivered *bool `json:"Delivered"`
-	Returned *bool `json:"Returned"`
+	Returned  *bool `json:"Returned"`
 }

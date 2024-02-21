@@ -49,7 +49,6 @@ func main() {
 		_ = ch.Close()
 	}()
 
-
 	gormDB, err := gorm.Open(postgres.Open(url), &gorm.Config{})
 	if err != nil {
 		log.Fatalf("Failed to connect to database: %v", err)
@@ -66,7 +65,7 @@ func main() {
 
 	e := echo.New()
 
-	report.NewReportController(e, ch, createReportService, updateReportService)
+	report.NewReportController(e, ch, config, createReportService, updateReportService)
 
 	if err := e.Start(port); err != nil {
 		log.Fatalf("Failed to start server: %v", err)

@@ -1,16 +1,19 @@
 package report
 
 import (
+	"encoding/json"
 	"log"
 	"net/http"
 
 	"github.com/google/uuid"
 	"github.com/labstack/echo"
 	amqp "github.com/rabbitmq/amqp091-go"
+	config "github.com/zhuravlevma/golang-ddd-architecture/internal/__config__"
 	"github.com/zhuravlevma/golang-ddd-architecture/internal/accounting/reports/report/domain/interactors"
 	"github.com/zhuravlevma/golang-ddd-architecture/internal/accounting/reports/report/domain/ports/in"
 	"github.com/zhuravlevma/golang-ddd-architecture/internal/accounting/reports/report/domain/queries"
 	"github.com/zhuravlevma/golang-ddd-architecture/internal/accounting/reports/report/dtos"
+	"github.com/zhuravlevma/golang-ddd-architecture/internal/warehouse/order-managment/warehouse/domain/events"
 )
 
 type ReportController struct {
@@ -19,13 +22,13 @@ type ReportController struct {
 	findReportByIdQuery    queries.FindReportByIdQuery
 }
 
-func NewReportController(e *echo.Echo, amqpChannel *amqp.Channel, createReportInteractor interactors.CreateReportInteractor, updateReportInteractor interactors.UpdateReportInteractor) *ReportController {
+func NewReportController(e *echo.Echo, amqpChannel *amqp.Channel, config *config.Config, createReportInteractor interactors.CreateReportInteractor, updateReportInteractor interactors.UpdateReportInteractor) *ReportController {
 	controller := &ReportController{
 		createReportInteractor: createReportInteractor,
 		updateReportInteractor: updateReportInteractor,
 	}
 	q, err := amqpChannel.QueueDeclare(
-		"hello",
+		config.OrderValidatedEvent,
 		false,
 		false,
 		false,
@@ -48,9 +51,15 @@ func NewReportController(e *echo.Echo, amqpChannel *amqp.Channel, createReportIn
 	if err != nil {
 		log.Fatalf("failed to register a consumer. Error: %s", err)
 	}
+
 	go func() {
 		for message := range messages {
-			log.Printf("received a message: %s", message.Body)
+			data := &events.OrderValidatedEvent{}
+			err := json.Unmarshal(message.Body, data)
+			if err != nil {
+				panic(err)
+			}
+			controller.ApplyOrderValidated(e.NewContext(echo.New().AcquireContext().Request(), echo.New().AcquireContext().Response()), data)
 		}
 	}()
 	e.PATCH("/reports/:id", controller.UpdateReport)
@@ -84,6 +93,21 @@ func (rc *ReportController) UpdateReport(c echo.Context) error {
 }
 
 func (rc *ReportController) FindReportById(c echo.Context) error {
+
+	id, err := uuid.Parse(c.Param("id"))
+
+	result, err := rc.findReportByIdQuery.Execute(id)
+
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{
+			"error": "Failed to create product",
+		})
+	}
+
+	return c.JSON(http.StatusCreated, result)
+}
+
+func (rc *ReportController) ApplyOrderValidated(c echo.Context, event *events.OrderValidatedEvent) error {
 
 	id, err := uuid.Parse(c.Param("id"))
 

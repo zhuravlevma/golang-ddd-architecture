@@ -25,7 +25,7 @@ type CurierEntity struct {
 
 func (c *CurierEntity) AddOrder(order OrderEntity) error {
 	if len(c.Orders) > 3 {
-		return errors.New("Exceeded the number of orders");
+		return errors.New("Exceeded the number of orders")
 	}
 	c.Orders = append(c.Orders, order)
 	return nil
@@ -41,7 +41,7 @@ func (c *CurierEntity) ChangeLastName(lastName string) {
 
 func (c *CurierEntity) UpdateRating(newRating float64) {
 	totalRating := c.Rating * float64(len(c.Orders))
-	updatedRating := (totalRating + newRating) / (float64(len(c.Orders)) + 1);
+	updatedRating := (totalRating + newRating) / (float64(len(c.Orders)) + 1)
 	c.Rating = updatedRating
 }
 
@@ -86,7 +86,6 @@ func (c *CurierEntity) DeliverOrder(orderId uuid.UUID) {
 	}
 }
 
-
 func (c *CurierEntity) CompleteDeliveryForAllOrders() {
 	for _, order := range c.Orders {
 		order.DeliverOrder()
@@ -95,7 +94,7 @@ func (c *CurierEntity) CompleteDeliveryForAllOrders() {
 
 func (c *CurierEntity) ChangeStatus(newStatus bool) error {
 	if c.IsActive == true && newStatus == false && len(c.Orders) > 0 {
-		errors.New("Deliverman has orders");
+		errors.New("Deliverman has orders")
 	}
 	c.IsActive = newStatus
 	return nil
@@ -103,6 +102,6 @@ func (c *CurierEntity) ChangeStatus(newStatus bool) error {
 
 func (c *CurierEntity) AddNewMessageToOrders(message string) {
 	for _, order := range c.Orders {
-		order.AddInfoToDescription(message + " " + c.FirstName+ " " + c.LastName)
+		order.AddInfoToDescription(message + " " + c.FirstName + " " + c.LastName)
 	}
 }
