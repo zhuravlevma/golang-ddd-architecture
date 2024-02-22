@@ -1,6 +1,10 @@
 package entities
 
-import "github.com/google/uuid"
+import (
+	"github.com/google/uuid"
+	lib "github.com/zhuravlevma/golang-ddd-architecture/internal/__lib__"
+	"github.com/zhuravlevma/golang-ddd-architecture/internal/accounting/reports/report/domain/events"
+)
 
 type ReportEntity struct {
 	ID           uuid.UUID
@@ -8,12 +12,15 @@ type ReportEntity struct {
 	OrderId      uuid.UUID
 	ReportNumber int
 	Positions    []ReportPositionEntity
+	DomainMessages []lib.DomainMessage
 }
 
 func (report *ReportEntity) UpdateReportStatus(status bool) {
 	if status == true {
 		report.IsValid = true
-		// add message to events
+		report.DomainMessages = append(report.DomainMessages, events.NewReportValidatedEvent(events.ReportValidatedPayload{
+			OrderId: report.OrderId,
+		}, report.ID))
 	} else {
 		report.IsValid = false
 	}
