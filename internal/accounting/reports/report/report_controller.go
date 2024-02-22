@@ -59,7 +59,7 @@ func NewReportController(e *echo.Echo, amqpChannel *amqp.Channel, config *config
 			if err != nil {
 				panic(err)
 			}
-			controller.ApplyOrderValidated(e.NewContext(echo.New().AcquireContext().Request(), echo.New().AcquireContext().Response()), data)
+			controller.ApplyOrderValidated(data)
 		}
 	}()
 	e.PATCH("/reports/:id", controller.UpdateReport)
@@ -107,17 +107,13 @@ func (rc *ReportController) FindReportById(c echo.Context) error {
 	return c.JSON(http.StatusCreated, result)
 }
 
-func (rc *ReportController) ApplyOrderValidated(c echo.Context, event *events.OrderValidatedEvent) error {
+func (rc *ReportController) ApplyOrderValidated(event *events.OrderValidatedEvent) error {
+	_, err := rc.createReportInteractor.Execute(&in.CreateReportParams{
+		OrderId: event.Payload.OrderId,
+	})
 
-	id, err := uuid.Parse(c.Param("id"))
-
-	result, err := rc.findReportByIdQuery.Execute(id)
-
-	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{
-			"error": "Failed to create product",
-		})
+	if (err != nil) {
+		return err
 	}
-
-	return c.JSON(http.StatusCreated, result)
+	return nil
 }

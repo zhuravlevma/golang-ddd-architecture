@@ -1,11 +1,12 @@
 package events
 
 import (
+	"github.com/google/uuid"
 	config "github.com/zhuravlevma/golang-ddd-architecture/internal/__config__"
 )
 
 type OrderValidatedPayload struct {
-	orderId string
+	OrderId uuid.UUID `json:"OrderId"`
 }
 
 type OrderValidatedEvent struct {
