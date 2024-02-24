@@ -23,7 +23,7 @@ func (s *CreateReportInteractor) Execute(params *in.CreateReportParams) (*entiti
 		ID:           uuid.New(),
 		IsValid:      false,
 		ReportNumber: 230030,
-		OrderId: params.OrderId,
+		OrderId:      params.OrderId,
 		Positions: []entities.ReportPositionEntity{{
 			ID:      uuid.New(),
 			Name:    "empty position",

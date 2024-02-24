@@ -112,7 +112,7 @@ func (rc *ReportController) ApplyOrderValidated(event *events.OrderValidatedEven
 		OrderId: event.Payload.OrderId,
 	})
 
-	if (err != nil) {
+	if err != nil {
 		return err
 	}
 	return nil

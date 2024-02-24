@@ -7,11 +7,11 @@ import (
 )
 
 type ReportEntity struct {
-	ID           uuid.UUID
-	IsValid      bool
-	OrderId      uuid.UUID
-	ReportNumber int
-	Positions    []ReportPositionEntity
+	ID             uuid.UUID
+	IsValid        bool
+	OrderId        uuid.UUID
+	ReportNumber   int
+	Positions      []ReportPositionEntity
 	DomainMessages []lib.DomainMessage
 }
 
