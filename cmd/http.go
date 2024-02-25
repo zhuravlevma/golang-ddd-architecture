@@ -9,6 +9,7 @@ import (
 	"github.com/labstack/echo"
 	amqp "github.com/rabbitmq/amqp091-go"
 	config "github.com/zhuravlevma/golang-ddd-architecture/internal/__config__"
+	relay "github.com/zhuravlevma/golang-ddd-architecture/internal/__relay__"
 	"github.com/zhuravlevma/golang-ddd-architecture/internal/accounting/reports/report"
 	"github.com/zhuravlevma/golang-ddd-architecture/internal/accounting/reports/report/dal"
 	"github.com/zhuravlevma/golang-ddd-architecture/internal/accounting/reports/report/dal/orm"
@@ -30,6 +31,7 @@ func main() {
 	port := fmt.Sprintf(":%d", config.Port)
 
 	conn, err := amqp.Dial("amqp://guest:guest@localhost:5672/")
+
 
 	if err != nil {
 		log.Fatalf("unable to open connect to RabbitMQ server. Error: %s", err)
@@ -54,7 +56,10 @@ func main() {
 		log.Fatalf("Failed to connect to database: %v", err)
 	}
 
-	gormDB.AutoMigrate(&orm.ReportOrm{}, &orm.ReportPositionOrm{})
+	gormDB.AutoMigrate(&orm.ReportOrm{}, &orm.ReportPositionOrm{}, &relay.MessageOrm{})
+
+	relay.HandleCron(gormDB)
+
 
 	reportRepository := dal.ReportRepository{
 		Db: gormDB,
