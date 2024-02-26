@@ -30,12 +30,12 @@ func NewReportController(e *echo.Echo, amqpChannel *amqp.Channel, config *config
 
 	messages, err := amqpChannel.Consume(
 		config.OrderValidatedEvent, // queue
-		"",     // consumer
-		true,   // auto-ack
-		false,  // exclusive
-		false,  // no-local
-		false,  // no-wait
-		nil,    // args
+		"",                         // consumer
+		true,                       // auto-ack
+		false,                      // exclusive
+		false,                      // no-local
+		false,                      // no-wait
+		nil,                        // args
 	)
 	if err != nil {
 		log.Fatalf("failed to register a consumer. Error: %s", err)

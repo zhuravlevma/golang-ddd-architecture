@@ -32,7 +32,6 @@ func main() {
 
 	conn, err := amqp.Dial("amqp://guest:guest@localhost:5672/")
 
-
 	if err != nil {
 		log.Fatalf("unable to open connect to RabbitMQ server. Error: %s", err)
 	}
@@ -80,7 +79,6 @@ func main() {
 	}
 
 	relay.HandleCron(gormDB, ch)
-
 
 	report.NewReportController(e, ch, config, createReportService, updateReportService)
 

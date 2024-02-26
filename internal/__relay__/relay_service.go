@@ -23,14 +23,14 @@ func handle(db *gorm.DB, amqpChannel *amqp.Channel) {
 		ids = append(ids, message.ID)
 		mapB, _ := json.Marshal(message.Payload)
 		amqpChannel.PublishWithContext(ctx,
-			"",     // exchange
-		message.MessageType, // routing key
-		false,  // mandatory
-		false,  // immediate
-		amqp.Publishing{
-			ContentType: "text/plain",
-			Body:        []byte(mapB),
-		})
+			"",                  // exchange
+			message.MessageType, // routing key
+			false,               // mandatory
+			false,               // immediate
+			amqp.Publishing{
+				ContentType: "text/plain",
+				Body:        []byte(mapB),
+			})
 	}
 
 	if len(messages) > 0 {
