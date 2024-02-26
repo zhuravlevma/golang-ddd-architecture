@@ -58,9 +58,6 @@ func main() {
 
 	gormDB.AutoMigrate(&orm.ReportOrm{}, &orm.ReportPositionOrm{}, &relay.MessageOrm{})
 
-	relay.HandleCron(gormDB)
-
-
 	reportRepository := dal.ReportRepository{
 		Db: gormDB,
 	}
@@ -69,6 +66,21 @@ func main() {
 	updateReportService := interactors.NewUpdateReportInteractor(&reportRepository, &reportRepository)
 
 	e := echo.New()
+
+	_, errQueueDeclared := ch.QueueDeclare(
+		config.OrderValidatedEvent,
+		false,
+		false,
+		false,
+		false,
+		nil,
+	)
+	if errQueueDeclared != nil {
+		log.Fatalf("failed to declare a queue. Error: %s", err)
+	}
+
+	relay.HandleCron(gormDB, ch)
+
 
 	report.NewReportController(e, ch, config, createReportService, updateReportService)
 

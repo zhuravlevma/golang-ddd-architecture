@@ -27,20 +27,9 @@ func NewReportController(e *echo.Echo, amqpChannel *amqp.Channel, config *config
 		createReportInteractor: createReportInteractor,
 		updateReportInteractor: updateReportInteractor,
 	}
-	q, err := amqpChannel.QueueDeclare(
-		config.OrderValidatedEvent,
-		false,
-		false,
-		false,
-		false,
-		nil,
-	)
-	if err != nil {
-		log.Fatalf("failed to declare a queue. Error: %s", err)
-	}
 
 	messages, err := amqpChannel.Consume(
-		q.Name, // queue
+		config.OrderValidatedEvent, // queue
 		"",     // consumer
 		true,   // auto-ack
 		false,  // exclusive
