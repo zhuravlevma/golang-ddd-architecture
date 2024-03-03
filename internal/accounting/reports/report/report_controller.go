@@ -98,7 +98,7 @@ func (rc *ReportController) FindReportById(c echo.Context) error {
 
 func (rc *ReportController) ApplyOrderValidated(event *events.OrderValidatedEvent) error {
 	_, err := rc.createReportInteractor.Execute(&in.CreateReportParams{
-		OrderId: event.Payload.OrderId,
+		OrderId: event.GetEvent().Payload.(events.OrderValidatedPayload).OrderId,
 	})
 
 	if err != nil {

@@ -3,6 +3,7 @@ package events
 import (
 	"github.com/google/uuid"
 	config "github.com/zhuravlevma/golang-ddd-architecture/internal/__config__"
+	lib "github.com/zhuravlevma/golang-ddd-architecture/internal/__lib__"
 )
 
 type OrderValidatedPayload struct {
@@ -10,22 +11,22 @@ type OrderValidatedPayload struct {
 }
 
 type OrderValidatedEvent struct {
-	Reason        string                `json:"Reason"`
-	Payload       OrderValidatedPayload `json:"Payload"`
-	MessageName   string                `json:"MessageName"`
-	AggregateId   string                `json:"AggregateId"`
-	AggregateName string                `json:"AggregateName"`
-	ContextName   string                `json:"ContextName"`
-	MessageType   string                `json:"MessageType"`
+	Event lib.DomainAttr
 }
 
-func (e *OrderValidatedEvent) New(payload OrderValidatedPayload, aggregateId string) *OrderValidatedEvent {
+func (e *OrderValidatedEvent) GetEvent() *lib.DomainAttr {
+	return &e.Event
+}
+
+func NewOrderValidatedEvent(payload OrderValidatedPayload, aggregateId uuid.UUID) *OrderValidatedEvent {
 	return &OrderValidatedEvent{
-		Reason:        "The order was validated",
-		Payload:       payload,
-		MessageName:   config.New().OrderValidatedEvent,
-		AggregateId:   aggregateId,
-		AggregateName: "Warehouse",
-		ContextName:   "warehouse",
+		Event: lib.DomainAttr{
+			Reason:        "The report was validated",
+			Payload:       payload,
+			MessageName:   config.New().ReportValidatedEvent,
+			AggregateId:   aggregateId,
+			AggregateName: "Report",
+			ContextName:   "accounting",
+		},
 	}
 }
