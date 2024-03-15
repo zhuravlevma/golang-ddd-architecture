@@ -6,7 +6,7 @@ Implementation of DDD patterns in Golang
 
 ### Event Storming schema
 
-![image](https://github.com/zhuravlevma/nestjs-ddd-architecture/assets/44276887/bb18f714-0bbf-4109-a638-976352e5eab7)
+![image](https://github.com/zhuravlevma/golang-ddd-architecture/assets/44276887/2a5d6d1c-18de-431d-aa51-9fc2dea5a106)
 
 ### Describe
 
