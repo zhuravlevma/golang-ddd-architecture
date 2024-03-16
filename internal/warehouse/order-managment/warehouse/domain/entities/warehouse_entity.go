@@ -26,5 +26,4 @@ func (w *WarehouseEntity) ChangeOrderStatusToValid(orderId uuid.UUID) {
 			}, w.Id))
 		}
 	}
-
 }
