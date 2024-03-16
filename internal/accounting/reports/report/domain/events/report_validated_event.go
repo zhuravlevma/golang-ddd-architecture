@@ -12,11 +12,11 @@ type ReportValidatedPayload struct {
 
 func NewReportValidatedEvent(payload ReportValidatedPayload, aggregateId uuid.UUID) lib.DomainMessage[lib.DomainMessagePayload] {
 	return lib.DomainMessage[lib.DomainMessagePayload]{
-			Reason:        "The report was validated",
-			Payload:       payload,
-			MessageName:   config.New().ReportValidatedEvent,
-			AggregateId:   aggregateId,
-			AggregateName: "Report",
-			ContextName:   "accounting",
+		Reason:        "The report was validated",
+		Payload:       payload,
+		MessageName:   config.New().ReportValidatedEvent,
+		AggregateId:   aggregateId,
+		AggregateName: "Report",
+		ContextName:   "accounting",
 	}
 }

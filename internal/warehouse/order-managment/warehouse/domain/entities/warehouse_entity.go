@@ -7,9 +7,9 @@ import (
 )
 
 type WarehouseEntity struct {
-	Id uuid.UUID
-	Name string
-	Orders []OrderEntity
+	Id             uuid.UUID
+	Name           string
+	Orders         []OrderEntity
 	DomainMessages []lib.DomainMessage[lib.DomainMessagePayload]
 }
 

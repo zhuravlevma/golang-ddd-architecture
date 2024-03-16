@@ -3,8 +3,8 @@ package entities
 import "github.com/google/uuid"
 
 type OrderEntity struct {
-	Id uuid.UUID
-	Name string
+	Id      uuid.UUID
+	Name    string
 	IsValid bool
 }
 

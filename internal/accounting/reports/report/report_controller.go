@@ -44,12 +44,7 @@ func NewReportController(e *echo.Echo, amqpChannel *amqp.Channel, config *config
 
 	go func() {
 		for message := range messages {
-			data := &lib.DomainMessage[events.OrderValidatedPayload]{}
-			err := json.Unmarshal(message.Body, data)
-			if err != nil {
-				panic(err)
-			}
-			controller.ApplyOrderValidated(data)
+			controller.ApplyOrderValidated(message)
 		}
 	}()
 	e.PATCH("/reports/:id", controller.UpdateReport)
@@ -61,7 +56,7 @@ func NewReportController(e *echo.Echo, amqpChannel *amqp.Channel, config *config
 func (rc *ReportController) UpdateReport(c echo.Context) error {
 	var updateReportDto dtos.UpdateReportDto
 
-	id, err := uuid.Parse(c.Param("id"))
+	id, _ := uuid.Parse(c.Param("id"))
 	if err := c.Bind(&updateReportDto); err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{
 			"error": "Failed to parse request body",
@@ -84,7 +79,7 @@ func (rc *ReportController) UpdateReport(c echo.Context) error {
 
 func (rc *ReportController) FindReportById(c echo.Context) error {
 
-	id, err := uuid.Parse(c.Param("id"))
+	id, _ := uuid.Parse(c.Param("id"))
 
 	result, err := rc.findReportByIdQuery.Execute(id)
 
@@ -97,8 +92,14 @@ func (rc *ReportController) FindReportById(c echo.Context) error {
 	return c.JSON(http.StatusCreated, result)
 }
 
-func (rc *ReportController) ApplyOrderValidated(event *lib.DomainMessage[events.OrderValidatedPayload]) error {
-	_, err := rc.createReportInteractor.Execute(&in.CreateReportParams{
+func (rc *ReportController) ApplyOrderValidated(message amqp.Delivery) error {
+	event := &lib.DomainMessage[events.OrderValidatedPayload]{}
+	err := json.Unmarshal(message.Body, event)
+	if err != nil {
+		panic(err)
+	}
+
+	_, err = rc.createReportInteractor.Execute(&in.CreateReportParams{
 		OrderId: event.Payload.OrderId,
 	})
 
