@@ -5,15 +5,14 @@ import (
 	lib "github.com/zhuravlevma/golang-ddd-architecture/internal/__lib__"
 )
 
-func DomainToORM(event lib.DomainMessage) *MessageOrm {
-	eventAttr := event.GetEvent()
+func DomainToORM(event lib.DomainMessage[lib.DomainMessagePayload]) *MessageOrm {
 	return &MessageOrm{
-		Reason:        eventAttr.Reason,
-		MessageType:   eventAttr.MessageType,
-		Payload:       eventAttr.Payload.(pgtype.JSONB),
-		AggregateId:   eventAttr.AggregateId,
-		AggregateName: eventAttr.AggregateName,
-		ContextName:   eventAttr.ContextName,
-		MessageName:   eventAttr.MessageName,
+		Reason:        event.Reason,
+		MessageType:   event.MessageType,
+		Payload:       event.Payload.(pgtype.JSONB),
+		AggregateId:   event.AggregateId,
+		AggregateName: event.AggregateName,
+		ContextName:   event.ContextName,
+		MessageName:   event.MessageName,
 	}
 }

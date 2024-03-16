@@ -10,7 +10,7 @@ type WarehouseEntity struct {
 	Id uuid.UUID
 	Name string
 	Orders []OrderEntity
-	DomainMessages []lib.DomainMessage
+	DomainMessages []lib.DomainMessage[lib.DomainMessagePayload]
 }
 
 func (w *WarehouseEntity) AddOrder(order OrderEntity) {

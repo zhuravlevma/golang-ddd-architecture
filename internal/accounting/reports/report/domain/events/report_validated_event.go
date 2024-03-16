@@ -10,23 +10,13 @@ type ReportValidatedPayload struct {
 	OrderId uuid.UUID `json:"OrderId"`
 }
 
-type ReportValidatedEvent struct {
-	Event lib.DomainAttr
-}
-
-func (e *ReportValidatedEvent) GetEvent() *lib.DomainAttr {
-	return &e.Event
-}
-
-func NewReportValidatedEvent(payload ReportValidatedPayload, aggregateId uuid.UUID) *ReportValidatedEvent {
-	return &ReportValidatedEvent{
-		Event: lib.DomainAttr{
+func NewReportValidatedEvent(payload ReportValidatedPayload, aggregateId uuid.UUID) lib.DomainMessage[lib.DomainMessagePayload] {
+	return lib.DomainMessage[lib.DomainMessagePayload]{
 			Reason:        "The report was validated",
 			Payload:       payload,
 			MessageName:   config.New().ReportValidatedEvent,
 			AggregateId:   aggregateId,
 			AggregateName: "Report",
 			ContextName:   "accounting",
-		},
 	}
 }

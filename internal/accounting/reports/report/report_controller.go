@@ -9,6 +9,7 @@ import (
 	"github.com/labstack/echo"
 	amqp "github.com/rabbitmq/amqp091-go"
 	config "github.com/zhuravlevma/golang-ddd-architecture/internal/__config__"
+	lib "github.com/zhuravlevma/golang-ddd-architecture/internal/__lib__"
 	"github.com/zhuravlevma/golang-ddd-architecture/internal/accounting/reports/report/domain/interactors"
 	"github.com/zhuravlevma/golang-ddd-architecture/internal/accounting/reports/report/domain/ports/in"
 	"github.com/zhuravlevma/golang-ddd-architecture/internal/accounting/reports/report/domain/queries"
@@ -43,7 +44,7 @@ func NewReportController(e *echo.Echo, amqpChannel *amqp.Channel, config *config
 
 	go func() {
 		for message := range messages {
-			data := &events.OrderValidatedEvent{}
+			data := &lib.DomainMessage[events.OrderValidatedPayload]{}
 			err := json.Unmarshal(message.Body, data)
 			if err != nil {
 				panic(err)
@@ -96,9 +97,9 @@ func (rc *ReportController) FindReportById(c echo.Context) error {
 	return c.JSON(http.StatusCreated, result)
 }
 
-func (rc *ReportController) ApplyOrderValidated(event *events.OrderValidatedEvent) error {
+func (rc *ReportController) ApplyOrderValidated(event *lib.DomainMessage[events.OrderValidatedPayload]) error {
 	_, err := rc.createReportInteractor.Execute(&in.CreateReportParams{
-		OrderId: event.GetEvent().Payload.(events.OrderValidatedPayload).OrderId,
+		OrderId: event.Payload.OrderId,
 	})
 
 	if err != nil {

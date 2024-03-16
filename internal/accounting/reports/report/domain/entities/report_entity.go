@@ -12,7 +12,7 @@ type ReportEntity struct {
 	OrderId        uuid.UUID
 	ReportNumber   int
 	Positions      []ReportPositionEntity
-	DomainMessages []lib.DomainMessage
+	DomainMessages []lib.DomainMessage[lib.DomainMessagePayload]
 }
 
 func (report *ReportEntity) UpdateReportStatus(status bool) {
