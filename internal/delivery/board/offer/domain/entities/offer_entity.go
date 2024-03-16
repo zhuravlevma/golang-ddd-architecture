@@ -4,6 +4,8 @@ import (
 	"errors"
 
 	"github.com/google/uuid"
+	lib "github.com/zhuravlevma/golang-ddd-architecture/internal/__lib__"
+	"github.com/zhuravlevma/golang-ddd-architecture/internal/delivery/board/offer/domain/events"
 )
 
 type OfferEntity struct {
@@ -16,6 +18,7 @@ type OfferEntity struct {
 	WorkingHours           string
 	Weight                 int
 	Bid                    int
+	DomainMessages         []lib.DomainMessage[lib.DomainMessagePayload]
 }
 
 func (o *OfferEntity) SetVehicleType(vehicleType string) {
@@ -44,9 +47,9 @@ func (o *OfferEntity) IncreaseBid(amount int) {
 	o.Bid += amount
 }
 
-func (o *OfferEntity) setWeight(weight int) error {
+func (o *OfferEntity) SetWeight(weight int) error {
 	if weight < 0 {
-		return errors.New("Order weight cannot be negative")
+		return errors.New("order weight cannot be negative")
 	} else if weight <= 5 {
 		o.VehicleType = "Bike"
 	} else if weight <= 10 {
@@ -55,10 +58,13 @@ func (o *OfferEntity) setWeight(weight int) error {
 		o.VehicleType = "Big truck"
 	}
 	o.Weight = weight
+	o.UpdateBid()
 	return nil
 }
 
 func (o *OfferEntity) CurierTakeOffer(curierId uuid.UUID) {
 	o.CurierId = &curierId
-	// add event
+	o.DomainMessages = append(o.DomainMessages, events.NewOfferTakedEvent(events.OfferTakedPayload{
+		OrderId: o.OrderId,
+	}, o.Id))
 }
