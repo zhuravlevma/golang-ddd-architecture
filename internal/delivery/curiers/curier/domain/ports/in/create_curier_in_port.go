@@ -6,7 +6,7 @@ import (
 
 type CreateCurierParams struct {
 	FirstName string
-  LastName string
+	LastName  string
 }
 
 type CreateCurierInPort interface {

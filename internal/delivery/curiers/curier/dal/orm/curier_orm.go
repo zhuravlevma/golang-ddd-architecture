@@ -5,18 +5,18 @@ import (
 )
 
 type CurierOrm struct {
-	ID           uuid.UUID `gorm:"primaryKey"`
-	FirstName      string
-	LastName      string
-	IsActive bool
-	Email string
-	Phone int
-	VehicleType string
-	WorkingHours int
-	Rating int
+	ID               uuid.UUID `gorm:"primaryKey"`
+	FirstName        string
+	LastName         string
+	IsActive         bool
+	Email            string
+	Phone            int
+	VehicleType      string
+	WorkingHours     int
+	Rating           float64
 	DeliveryCapacity int
-	Specialization string
-	CommissionRate int
-	PaymentDetails int
-	Orders    []OrderOrm `gorm:"foreignKey:CurierId"`
+	Specialization   string
+	CommissionRate   float64
+	PaymentDetails   int
+	Orders           []OrderOrm `gorm:"foreignKey:CurierId"`
 }

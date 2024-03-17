@@ -7,7 +7,7 @@ import (
 
 type AddOrderToCurierParams struct {
 	CurierId uuid.UUID
-  OrderId uuid.UUID
+	OrderId  uuid.UUID
 }
 
 type AddOrderToCurierInPort interface {

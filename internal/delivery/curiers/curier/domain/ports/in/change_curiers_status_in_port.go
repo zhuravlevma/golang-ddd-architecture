@@ -7,7 +7,7 @@ import (
 
 type ChangeCuriersStatusParams struct {
 	CurierId uuid.UUID
-  IsActive bool
+	IsActive bool
 }
 
 type ChangeCuriersStatusInPort interface {
