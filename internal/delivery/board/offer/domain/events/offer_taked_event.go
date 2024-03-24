@@ -8,6 +8,7 @@ import (
 
 type OfferTakedPayload struct {
 	OrderId uuid.UUID `json:"OrderId"`
+	CurierId uuid.UUID `json:"CurierId"`
 }
 
 func NewOfferTakedEvent(payload OfferTakedPayload, aggregateId uuid.UUID) lib.DomainMessage[lib.DomainMessagePayload] {
