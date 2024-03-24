@@ -1,5 +1,5 @@
 package dtos
 
-type UpdateOrderStatusDto struct {
+type UpdateOrderDto struct {
 	IsValid bool `json:"IsValid"`
 }

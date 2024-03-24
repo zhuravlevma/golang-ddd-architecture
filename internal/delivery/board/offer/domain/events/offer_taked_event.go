@@ -7,7 +7,7 @@ import (
 )
 
 type OfferTakedPayload struct {
-	OrderId uuid.UUID `json:"OrderId"`
+	OrderId  uuid.UUID `json:"OrderId"`
 	CurierId uuid.UUID `json:"CurierId"`
 }
 

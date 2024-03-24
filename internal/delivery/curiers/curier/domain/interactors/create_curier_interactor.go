@@ -8,7 +8,7 @@ import (
 )
 
 type CreateCurierInteractor struct {
-	CreateCurierOutPort  out.CreateCurierOutPort
+	CreateCurierOutPort out.CreateCurierOutPort
 }
 
 func NewCreateCurierInteractor(
@@ -19,19 +19,19 @@ func NewCreateCurierInteractor(
 
 func (s *CreateCurierInteractor) Execute(params *in.CreateCurierParams) (*entities.CurierEntity, error) {
 	curier := entities.CurierEntity{
-		Id: uuid.New(),
-		FirstName: params.FirstName,
-		LastName: params.LastName,
-		Email: "email",
-		Phone: 121212,
-		VehicleType: "bike",
-		WorkingHours: 10,
-		Rating: 0,
+		Id:               uuid.New(),
+		FirstName:        params.FirstName,
+		LastName:         params.LastName,
+		Email:            "email",
+		Phone:            121212,
+		VehicleType:      "bike",
+		WorkingHours:     10,
+		Rating:           0,
 		DeliveryCapacity: 2,
-		Specialization: "food",
-		CommissionRate: 0.2,
-		PaymentDetails: 93321331332,
-		IsActive: true,
+		Specialization:   "food",
+		CommissionRate:   0.2,
+		PaymentDetails:   93321331332,
+		IsActive:         true,
 	}
 
 	createdErr := s.CreateCurierOutPort.CreateCurier(&curier)

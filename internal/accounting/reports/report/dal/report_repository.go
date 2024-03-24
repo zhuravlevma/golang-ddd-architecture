@@ -31,7 +31,7 @@ func (repo *ReportRepository) UpdateReport(report *entities.ReportEntity) error 
 	err := repo.Db.Transaction(func(tx *gorm.DB) error {
 		tx.Create(&messages)
 
-		err := tx.Model(&entities.ReportEntity{}).Where("id = ?", dbReport.ID).Updates(dbReport).Error
+		err := tx.Model(&dbReport).Where("id = ?", dbReport.ID).Updates(dbReport).Error
 		if err != nil {
 			return err
 		}

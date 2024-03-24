@@ -40,7 +40,7 @@ func (repo *OfferRepository) UpdateOffer(offer *entities.OfferEntity) error {
 	err := repo.Db.Transaction(func(tx *gorm.DB) error {
 		tx.Create(&messages)
 
-		err := tx.Model(&entities.OfferEntity{}).Where("id = ?", dbOffer.ID).Updates(dbOffer).Error
+		err := tx.Model(&dbOffer).Where("id = ?", dbOffer.ID).Updates(dbOffer).Error
 		if err != nil {
 			return err
 		}

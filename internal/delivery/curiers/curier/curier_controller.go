@@ -16,10 +16,9 @@ import (
 	"github.com/zhuravlevma/golang-ddd-architecture/internal/delivery/curiers/curier/dtos"
 )
 
-
 type CurierController struct {
-	CreateCurierInteractor in.CreateCurierInPort
-	AddOrderToCurierInteractor in.AddOrderToCurierInPort
+	CreateCurierInteractor        in.CreateCurierInPort
+	AddOrderToCurierInteractor    in.AddOrderToCurierInPort
 	ChangeCuriersStatusInteractor in.ChangeCuriersStatusInPort
 }
 
@@ -27,21 +26,21 @@ func NewCurierController(e *echo.Echo, amqpChannel *amqp091.Channel, config *con
 	CreateCurierInteractor interactors.CreateCurierInteractor,
 	AddOrderToCurierInteractor interactors.AddOrderToCurierInteractor,
 	ChangeCuriersStatusInteractor interactors.ChangeCuriersStatusInteractor,
-	) *CurierController {
+) *CurierController {
 	controller := &CurierController{
-		CreateCurierInteractor: &CreateCurierInteractor,
-		AddOrderToCurierInteractor: &AddOrderToCurierInteractor,
+		CreateCurierInteractor:        &CreateCurierInteractor,
+		AddOrderToCurierInteractor:    &AddOrderToCurierInteractor,
 		ChangeCuriersStatusInteractor: &ChangeCuriersStatusInteractor,
 	}
 
 	messages, err := amqpChannel.Consume(
 		config.OfferTakedEvent, // queue
-		"",                          // consumer
-		true,                        // auto-ack
-		false,                       // exclusive
-		false,                       // no-local
-		false,                       // no-wait
-		nil,                         // args
+		"",                     // consumer
+		true,                   // auto-ack
+		false,                  // exclusive
+		false,                  // no-local
+		false,                  // no-wait
+		nil,                    // args
 	)
 	if err != nil {
 		log.Fatalf("failed to register a consumer. Error: %s", err)
@@ -68,7 +67,7 @@ func (oc *CurierController) CreateCurier(c echo.Context) error {
 
 	result, err := oc.CreateCurierInteractor.Execute(&in.CreateCurierParams{
 		FirstName: createCurierDto.FirstName,
-		LastName: createCurierDto.LastName,
+		LastName:  createCurierDto.LastName,
 	})
 
 	if err != nil {
@@ -80,7 +79,6 @@ func (oc *CurierController) CreateCurier(c echo.Context) error {
 	return c.JSON(http.StatusCreated, result)
 }
 
-
 func (oc *CurierController) AddOrderToCurier(c echo.Context) error {
 	var addOrderToCurierDto dtos.AddOrderToCurierDto
 
@@ -91,7 +89,7 @@ func (oc *CurierController) AddOrderToCurier(c echo.Context) error {
 	}
 
 	result, err := oc.AddOrderToCurierInteractor.Execute(&in.AddOrderToCurierParams{
-		OrderId: addOrderToCurierDto.OrderId,
+		OrderId:  addOrderToCurierDto.OrderId,
 		CurierId: addOrderToCurierDto.CurierId,
 	})
 
@@ -137,8 +135,8 @@ func (oc *CurierController) ApplyOfferTaked(message amqp091.Delivery) error {
 	}
 
 	_, err = oc.AddOrderToCurierInteractor.Execute(&in.AddOrderToCurierParams{
-		OrderId: event.Payload.OrderId,
-		CurierId:    event.Payload.CurierId,
+		OrderId:  event.Payload.OrderId,
+		CurierId: event.Payload.CurierId,
 	})
 
 	if err != nil {

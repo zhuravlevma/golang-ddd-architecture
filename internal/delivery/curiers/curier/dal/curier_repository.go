@@ -12,18 +12,18 @@ type CurierRepository struct {
 }
 
 func (repo *CurierRepository) FindCurierById(id uuid.UUID) (*entities.CurierEntity, error) {
-	var dbReport orm.CurierOrm
-	if err := repo.Db.First(&dbReport, id).Error; err != nil {
+	var dbCurier orm.CurierOrm
+	if err := repo.Db.First(&dbCurier, id).Error; err != nil {
 		return nil, err
 	}
 
-	return CurierToDomain(&dbReport), nil
+	return CurierToDomain(&dbCurier), nil
 }
 
-func (repo *CurierRepository) UpdateReport(report *entities.CurierEntity) error {
-	dbReport := CurierToOrm(report)
+func (repo *CurierRepository) UpdateReport(curier *entities.CurierEntity) error {
+	dbCurier := CurierToOrm(curier)
 	err := repo.Db.Transaction(func(tx *gorm.DB) error {
-		err := tx.Model(&entities.CurierEntity{}).Where("id = ?", dbReport.ID).Updates(dbReport).Error
+		err := tx.Model(&dbCurier).Where("id = ?", dbCurier.ID).Updates(dbCurier).Error
 		if err != nil {
 			return err
 		}
@@ -34,19 +34,19 @@ func (repo *CurierRepository) UpdateReport(report *entities.CurierEntity) error 
 		return nil
 	}
 
-	storedReport, err := repo.FindCurierById(dbReport.ID)
+	storedCurier, err := repo.FindCurierById(dbCurier.ID)
 	if err != nil {
 		return err
 	}
-	*report = *storedReport
+	*curier = *storedCurier
 	return nil
 }
 
-func (repo *CurierRepository) CreateReport(report *entities.CurierEntity) error {
-	dbReport := CurierToOrm(report)
+func (repo *CurierRepository) CreateCurier(report *entities.CurierEntity) error {
+	dbCurier := CurierToOrm(report)
 
 	err := repo.Db.Transaction(func(tx *gorm.DB) error {
-		if err := repo.Db.Create(dbReport).Error; err != nil {
+		if err := repo.Db.Create(dbCurier).Error; err != nil {
 			return err
 		}
 		return nil
@@ -56,10 +56,10 @@ func (repo *CurierRepository) CreateReport(report *entities.CurierEntity) error 
 		return nil
 	}
 
-	storedReport, err := repo.FindCurierById(dbReport.ID)
+	storedCurier, err := repo.FindCurierById(dbCurier.ID)
 	if err != nil {
 		return err
 	}
-	*report = *storedReport
+	*report = *storedCurier
 	return nil
 }
