@@ -9,7 +9,7 @@ import (
 
 type AddOrderInteractor struct {
 	GetWarehouseWithOrderPort out.GetWarehouseWithOrderOutPort
-	UpdateWarehousePort          out.UpdateWarehouseOutPort
+	UpdateWarehousePort       out.UpdateWarehouseOutPort
 }
 
 func NewCreateReportInteractor(
@@ -23,8 +23,8 @@ func (s *AddOrderInteractor) Execute(params *in.AddOrderParams) (*entities.Wareh
 	warehouse := s.GetWarehouseWithOrderPort.GetWarehouseWithOrder(params.WarehouseId, params.OrderId)
 
 	warehouse.AddOrder(entities.OrderEntity{
-		Id:          uuid.New(),
-		Name:        params.Name,
+		Id:      uuid.New(),
+		Name:    params.Name,
 		IsValid: false,
 	})
 	createdErr := s.UpdateWarehousePort.UpdateWarehouse(&warehouse)

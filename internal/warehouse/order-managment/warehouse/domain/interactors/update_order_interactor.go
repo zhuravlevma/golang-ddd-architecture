@@ -8,7 +8,7 @@ import (
 
 type UpdateOrderInteractor struct {
 	GetWarehouseWithOrderPort out.GetWarehouseWithOrderOutPort
-	UpdateWarehousePort          out.UpdateWarehouseOutPort
+	UpdateWarehousePort       out.UpdateWarehouseOutPort
 }
 
 func NewUpdateOrderInteractor(

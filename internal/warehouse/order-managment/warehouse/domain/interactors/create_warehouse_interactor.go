@@ -8,7 +8,7 @@ import (
 )
 
 type CreateWarehouseInteractor struct {
-	CreateWarehouseOutPort          out.CreateWarehouseOutPort
+	CreateWarehouseOutPort out.CreateWarehouseOutPort
 }
 
 func NewCreateWarehouseInteractor(
@@ -19,7 +19,7 @@ func NewCreateWarehouseInteractor(
 
 func (s *CreateWarehouseInteractor) Execute(params *in.CreateWarehouseParams) (*entities.WarehouseEntity, error) {
 	warehouse := entities.WarehouseEntity{
-		Id: uuid.New(),
+		Id:   uuid.New(),
 		Name: params.Name,
 	}
 	createdErr := s.CreateWarehouseOutPort.CreateWarehouse(&warehouse)

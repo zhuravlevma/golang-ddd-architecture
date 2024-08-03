@@ -14,8 +14,8 @@ import (
 
 type WarehouseController struct {
 	AddOrderInteractor        in.AddOrderInPort
-	CreateWarehouseInteractor    in.CreateWarehouseInPort
-	UpdateOrderInteractor in.UpdateOrderInPort
+	CreateWarehouseInteractor in.CreateWarehouseInPort
+	UpdateOrderInteractor     in.UpdateOrderInPort
 }
 
 func NewWarehouseController(e *echo.Echo, amqpChannel *amqp091.Channel, config *config.Config,
@@ -25,8 +25,8 @@ func NewWarehouseController(e *echo.Echo, amqpChannel *amqp091.Channel, config *
 ) *WarehouseController {
 	controller := &WarehouseController{
 		AddOrderInteractor:        &AddOrderInteractor,
-		CreateWarehouseInteractor:    &CreateWarehouseInteractor,
-		UpdateOrderInteractor: &UpdateOrderInteractor,
+		CreateWarehouseInteractor: &CreateWarehouseInteractor,
+		UpdateOrderInteractor:     &UpdateOrderInteractor,
 	}
 
 	e.POST("/warehouse/", controller.CreateWarehouse)
@@ -68,10 +68,10 @@ func (oc *WarehouseController) AddOrderToWh(c echo.Context) error {
 	}
 
 	result, err := oc.AddOrderInteractor.Execute(&in.AddOrderParams{
-		WarehouseId:  id,
-		OrderId: addOrderDto.OrderId,
-		Name: addOrderDto.Name,
-		IsValid: addOrderDto.IsValid,
+		WarehouseId: id,
+		OrderId:     addOrderDto.OrderId,
+		Name:        addOrderDto.Name,
+		IsValid:     addOrderDto.IsValid,
 	})
 
 	if err != nil {
@@ -90,7 +90,6 @@ func (oc *WarehouseController) UpdateOrder(c echo.Context) error {
 
 	orderId, _ := uuid.Parse(c.Param("orderId"))
 
-
 	if err := c.Bind(&updateOrderDto); err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{
 			"error": "Failed to parse request body",
@@ -98,9 +97,9 @@ func (oc *WarehouseController) UpdateOrder(c echo.Context) error {
 	}
 
 	result, err := oc.UpdateOrderInteractor.Execute(&in.UpdateOrderParams{
-		IsValid: updateOrderDto.IsValid,
+		IsValid:     updateOrderDto.IsValid,
 		WarehouseId: id,
-		OrderId: orderId,
+		OrderId:     orderId,
 	})
 
 	if err != nil {
