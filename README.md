@@ -1,4 +1,4 @@
-# DDD patterns with examples (in pogress)
+# DDD patterns with examples
 
 Implementation of DDD patterns in Golang
 
